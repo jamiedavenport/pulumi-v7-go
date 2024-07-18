@@ -32,33 +32,6 @@ If you are not using VSCode, you will need to ensure the following tools are ins
 1. Run `make up` to run the example program in `examples/yaml`.
 1. Run `make down` to tear down the example program.
 
-### Creating a new provider repository
-
-Pulumi offers this repository as a [GitHub template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for convenience.  From this repository:
-
-1. Click "Use this template".
-1. Set the following options:
-   * Owner: pulumi 
-   * Repository name: pulumi-v7-go-native (replace "v7-go" with the name of your provider)
-   * Description: Pulumi provider for v7-go
-   * Repository type: Public
-1. Clone the generated repository.
-
-From the templated repository:
-
-1. Run the following command to update files to use the name of your provider (third-party: use your GitHub organization/username):
-
-    ```bash
-    make prepare NAME=foo REPOSITORY=github.com/pulumi/pulumi-foo ORG=myorg
-    ```
-
-   This will do the following:
-   - rename folders in `provider/cmd` to `pulumi-resource-{NAME}`
-   - replace dependencies in `provider/go.mod` to reflect your repository name
-   - find and replace all instances of the boilerplate `v7-go` with the `NAME` of your provider.
-   - find and replace all instances of the boilerplate `jamiedavenport` with the `ORG` of your provider.
-   - replace all instances of the `github.com/jamiedavenport/pulumi-v7-go` repository with the `REPOSITORY` location
-
 #### Build the provider and install the plugin
 
    ```bash
