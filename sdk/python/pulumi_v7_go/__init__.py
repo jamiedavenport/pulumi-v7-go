@@ -8,6 +8,14 @@ import typing
 from .project import *
 from .provider import *
 from .random import *
+
+# Make subpackages available:
+if typing.TYPE_CHECKING:
+    import pulumi_v7_go.config as __config
+    config = __config
+else:
+    config = _utilities.lazy_import('pulumi_v7_go.config')
+
 _utilities.register(
     resource_modules="""
 [

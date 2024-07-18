@@ -21,6 +21,13 @@ export const Random: typeof import("./random").Random = null as any;
 utilities.lazyLoad(exports, ["Random"], () => require("./random"));
 
 
+// Export sub-modules:
+import * as config from "./config";
+
+export {
+    config,
+};
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

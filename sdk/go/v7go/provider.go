@@ -7,21 +7,34 @@ import (
 	"context"
 	"reflect"
 
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"internal"
 )
 
 type Provider struct {
 	pulumi.ProviderResourceState
+
+	ApiKey pulumi.StringOutput `pulumi:"apiKey"`
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.
 func NewProvider(ctx *pulumi.Context,
 	name string, args *ProviderArgs, opts ...pulumi.ResourceOption) (*Provider, error) {
 	if args == nil {
-		args = &ProviderArgs{}
+		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.ApiKey == nil {
+		return nil, errors.New("invalid value for required argument 'ApiKey'")
+	}
+	if args.ApiKey != nil {
+		args.ApiKey = pulumi.ToSecret(args.ApiKey).(pulumi.StringInput)
+	}
+	secrets := pulumi.AdditionalSecretOutputs([]string{
+		"apiKey",
+	})
+	opts = append(opts, secrets)
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Provider
 	err := ctx.RegisterResource("pulumi:providers:v7-go", name, args, &resource, opts...)
@@ -32,10 +45,12 @@ func NewProvider(ctx *pulumi.Context,
 }
 
 type providerArgs struct {
+	ApiKey string `pulumi:"apiKey"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
+	ApiKey pulumi.StringInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {
@@ -73,6 +88,10 @@ func (o ProviderOutput) ToProviderOutput() ProviderOutput {
 
 func (o ProviderOutput) ToProviderOutputWithContext(ctx context.Context) ProviderOutput {
 	return o
+}
+
+func (o ProviderOutput) ApiKey() pulumi.StringOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.ApiKey }).(pulumi.StringOutput)
 }
 
 func init() {
