@@ -1,6 +1,6 @@
-name: provider-xyz-native
+name: provider-v7-go-native
 runtime: dotnet
 plugins:
   providers:
-    - name: xyz
+    - name: v7-go
       path: ../../bin

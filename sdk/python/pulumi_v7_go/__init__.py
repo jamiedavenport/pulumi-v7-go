@@ -11,11 +11,11 @@ _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "xyz",
+  "pkg": "v7-go",
   "mod": "index",
-  "fqn": "pulumi_xyz",
+  "fqn": "pulumi_v7_go",
   "classes": {
-   "xyz:index:Random": "Random"
+   "v7-go:index:Random": "Random"
   }
  }
 ]
@@ -23,9 +23,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "xyz",
-  "token": "pulumi:providers:xyz",
-  "fqn": "pulumi_xyz",
+  "pkg": "v7-go",
+  "token": "pulumi:providers:v7-go",
+  "fqn": "pulumi_v7_go",
   "class": "Provider"
  }
 ]

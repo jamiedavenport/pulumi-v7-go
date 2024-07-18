@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi v7-go Resource Provider
 
-PACK             := xyz
+PACK             := v7-go
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @abc/xyz
-NUGET_PKG_NAME   := Abc.Xyz
+PROJECT          := github.com/jamiedavenport/pulumi-v7-go
+NODE_MODULE_NAME := @jamiedavenport/v7-go
+NUGET_PKG_NAME   := jamiedavenport.v7-go
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)

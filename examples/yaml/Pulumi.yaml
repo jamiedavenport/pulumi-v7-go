@@ -1,13 +1,13 @@
-name: provider-xyz-native
+name: provider-v7-go-native
 runtime: yaml
 plugins:
   providers:
-    - name: xyz
+    - name: v7-go
       path: ../../bin
 
 resources:
   myRandomResource:
-    type: xyz:Random
+    type: v7-go:Random
     properties:
       length: 24
 
