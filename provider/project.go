@@ -1,12 +1,10 @@
 package provider
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
+
+	"github.com/imroc/req/v3"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -34,6 +32,10 @@ type ProjectState struct {
 	ProjectId string `pulumi:"projectId"`
 }
 
+type CreateProjectRequest struct {
+	Name string `json:"name"`
+}
+
 type CreateProjectResponse struct {
 	Id string `json:"id"`
 }
@@ -45,45 +47,23 @@ func (Project) Create(ctx context.Context, name string, args ProjectArgs, previe
 	}
 
 	config := infer.GetConfig[Config](ctx)
+	client := req.C().DevMode()
+	var response CreateProjectResponse
 
-	body := map[string]string{
-		"name": args.Name,
-	}
-
-	jsonBody, err := json.Marshal(body)
+	resp, err := client.R().
+		SetBody(&CreateProjectRequest{Name: args.Name}).
+		SetSuccessResult(&response).
+		SetHeader("x-api-key", config.ApiKey).
+		Post(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects", args.WorkspaceId))
 	if err != nil {
-		return name, state, err
+		return Name, state, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects", args.WorkspaceId), bytes.NewBuffer(jsonBody))
-	if err != nil {
-		return name, state, err
-	}
-	req.Header.Set("x-api-key", config.ApiKey)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return name, state, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return name, state, fmt.Errorf("failed to create project: %s", resp.Status)
+	if !resp.IsSuccessState() {
+		return name, state, fmt.Errorf("failed to create project: %s", resp.String())
 	}
 
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return name, state, err
-	}
-
-	var createProjectResponse CreateProjectResponse
-	if err := json.Unmarshal(data, &createProjectResponse); err != nil {
-		return name, state, err
-	}
-
-	state.ProjectId = createProjectResponse.Id
+	state.ProjectId = response.Id
 
 	return name, state, nil
 }
