@@ -7,6 +7,7 @@ import (
 	"context"
 	"reflect"
 
+	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"internal"
 )
@@ -14,16 +15,24 @@ import (
 type Project struct {
 	pulumi.CustomResourceState
 
-	Result pulumi.StringOutput `pulumi:"result"`
+	Name        pulumi.StringOutput `pulumi:"name"`
+	ProjectId   pulumi.StringOutput `pulumi:"projectId"`
+	WorkspaceId pulumi.StringOutput `pulumi:"workspaceId"`
 }
 
 // NewProject registers a new resource with the given unique name, arguments, and options.
 func NewProject(ctx *pulumi.Context,
 	name string, args *ProjectArgs, opts ...pulumi.ResourceOption) (*Project, error) {
 	if args == nil {
-		args = &ProjectArgs{}
+		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.Name == nil {
+		return nil, errors.New("invalid value for required argument 'Name'")
+	}
+	if args.WorkspaceId == nil {
+		return nil, errors.New("invalid value for required argument 'WorkspaceId'")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Project
 	err := ctx.RegisterResource("v7-go:index:Project", name, args, &resource, opts...)
@@ -57,10 +66,14 @@ func (ProjectState) ElementType() reflect.Type {
 }
 
 type projectArgs struct {
+	Name        string `pulumi:"name"`
+	WorkspaceId string `pulumi:"workspaceId"`
 }
 
 // The set of arguments for constructing a Project resource.
 type ProjectArgs struct {
+	Name        pulumi.StringInput
+	WorkspaceId pulumi.StringInput
 }
 
 func (ProjectArgs) ElementType() reflect.Type {
@@ -100,8 +113,16 @@ func (o ProjectOutput) ToProjectOutputWithContext(ctx context.Context) ProjectOu
 	return o
 }
 
-func (o ProjectOutput) Result() pulumi.StringOutput {
-	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Result }).(pulumi.StringOutput)
+func (o ProjectOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
+}
+
+func (o ProjectOutput) ProjectId() pulumi.StringOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
+}
+
+func (o ProjectOutput) WorkspaceId() pulumi.StringOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.WorkspaceId }).(pulumi.StringOutput)
 }
 
 func init() {

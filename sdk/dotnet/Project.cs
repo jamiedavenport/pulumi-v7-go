@@ -12,8 +12,14 @@ namespace Pulumi.V7Go
     [V7GoResourceType("v7-go:index:Project")]
     public partial class Project : global::Pulumi.CustomResource
     {
-        [Output("result")]
-        public Output<string> Result { get; private set; } = null!;
+        [Output("name")]
+        public Output<string> Name { get; private set; } = null!;
+
+        [Output("projectId")]
+        public Output<string> ProjectId { get; private set; } = null!;
+
+        [Output("workspaceId")]
+        public Output<string> WorkspaceId { get; private set; } = null!;
 
 
         /// <summary>
@@ -23,7 +29,7 @@ namespace Pulumi.V7Go
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Project(string name, ProjectArgs? args = null, CustomResourceOptions? options = null)
+        public Project(string name, ProjectArgs args, CustomResourceOptions? options = null)
             : base("v7-go:index:Project", name, args ?? new ProjectArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -60,6 +66,12 @@ namespace Pulumi.V7Go
 
     public sealed class ProjectArgs : global::Pulumi.ResourceArgs
     {
+        [Input("name", required: true)]
+        public Input<string> Name { get; set; } = null!;
+
+        [Input("workspaceId", required: true)]
+        public Input<string> WorkspaceId { get; set; } = null!;
+
         public ProjectArgs()
         {
         }

@@ -1,7 +1,12 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -18,12 +23,19 @@ import (
 // - WireDependencies: Control how outputs and secrets flows through values.
 type Project struct{}
 
-type ProjectArgs struct{}
+type ProjectArgs struct {
+	WorkspaceId string `pulumi:"workspaceId"`
+	Name        string `pulumi:"name"`
+}
 
 type ProjectState struct {
 	ProjectArgs
 
-	Result string `pulumi:"result"`
+	ProjectId string `pulumi:"projectId"`
+}
+
+type CreateProjectResponse struct {
+	Id string `json:"id"`
 }
 
 func (Project) Create(ctx context.Context, name string, args ProjectArgs, preview bool) (string, ProjectState, error) {
@@ -34,7 +46,44 @@ func (Project) Create(ctx context.Context, name string, args ProjectArgs, previe
 
 	config := infer.GetConfig[Config](ctx)
 
-	state.Result = config.ApiKey
+	body := map[string]string{
+		"name": args.Name,
+	}
+
+	jsonBody, err := json.Marshal(body)
+	if err != nil {
+		return name, state, err
+	}
+
+	req, err := http.NewRequest("POST", fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects", args.WorkspaceId), bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return name, state, err
+	}
+	req.Header.Set("x-api-key", config.ApiKey)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return name, state, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return name, state, fmt.Errorf("failed to create project: %s", resp.Status)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return name, state, err
+	}
+
+	var createProjectResponse CreateProjectResponse
+	if err := json.Unmarshal(data, &createProjectResponse); err != nil {
+		return name, state, err
+	}
+
+	state.ProjectId = createProjectResponse.Id
 
 	return name, state, nil
 }

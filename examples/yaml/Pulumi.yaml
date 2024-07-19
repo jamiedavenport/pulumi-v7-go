@@ -8,9 +8,10 @@ plugins:
 resources:
   myProject:
     type: v7-go:Project
-    # properties:
-    #   length: 24
+    properties:
+      workspaceId: 01905686-d113-79ff-9b33-0fa7c3ff6664
+      name: "My Pulumi Project"
 
 outputs:
   output:
-    value: ${myProject.result}
+    value: ${myProject.projectId}

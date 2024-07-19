@@ -13,11 +13,32 @@ __all__ = ['ProjectArgs', 'Project']
 
 @pulumi.input_type
 class ProjectArgs:
-    def __init__(__self__):
+    def __init__(__self__, *,
+                 name: pulumi.Input[str],
+                 workspace_id: pulumi.Input[str]):
         """
         The set of arguments for constructing a Project resource.
         """
-        pass
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "workspace_id", workspace_id)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter(name="workspaceId")
+    def workspace_id(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "workspace_id")
+
+    @workspace_id.setter
+    def workspace_id(self, value: pulumi.Input[str]):
+        pulumi.set(self, "workspace_id", value)
 
 
 class Project(pulumi.CustomResource):
@@ -25,6 +46,8 @@ class Project(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 workspace_id: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Project resource with the given unique name, props, and options.
@@ -35,7 +58,7 @@ class Project(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: Optional[ProjectArgs] = None,
+                 args: ProjectArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Project resource with the given unique name, props, and options.
@@ -54,6 +77,8 @@ class Project(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 workspace_id: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -63,7 +88,13 @@ class Project(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProjectArgs.__new__(ProjectArgs)
 
-            __props__.__dict__["result"] = None
+            if name is None and not opts.urn:
+                raise TypeError("Missing required property 'name'")
+            __props__.__dict__["name"] = name
+            if workspace_id is None and not opts.urn:
+                raise TypeError("Missing required property 'workspace_id'")
+            __props__.__dict__["workspace_id"] = workspace_id
+            __props__.__dict__["project_id"] = None
         super(Project, __self__).__init__(
             'v7-go:index:Project',
             resource_name,
@@ -86,11 +117,23 @@ class Project(pulumi.CustomResource):
 
         __props__ = ProjectArgs.__new__(ProjectArgs)
 
-        __props__.__dict__["result"] = None
+        __props__.__dict__["name"] = None
+        __props__.__dict__["project_id"] = None
+        __props__.__dict__["workspace_id"] = None
         return Project(resource_name, opts=opts, __props__=__props__)
 
     @property
     @pulumi.getter
-    def result(self) -> pulumi.Output[str]:
-        return pulumi.get(self, "result")
+    def name(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter(name="projectId")
+    def project_id(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "project_id")
+
+    @property
+    @pulumi.getter(name="workspaceId")
+    def workspace_id(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "workspace_id")
 

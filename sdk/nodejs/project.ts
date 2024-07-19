@@ -31,7 +31,9 @@ export class Project extends pulumi.CustomResource {
         return obj['__pulumiType'] === Project.__pulumiType;
     }
 
-    public /*out*/ readonly result!: pulumi.Output<string>;
+    public readonly name!: pulumi.Output<string>;
+    public /*out*/ readonly projectId!: pulumi.Output<string>;
+    public readonly workspaceId!: pulumi.Output<string>;
 
     /**
      * Create a Project resource with the given unique name, arguments, and options.
@@ -40,13 +42,23 @@ export class Project extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: ProjectArgs, opts?: pulumi.CustomResourceOptions) {
+    constructor(name: string, args: ProjectArgs, opts?: pulumi.CustomResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["result"] = undefined /*out*/;
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
+            if ((!args || args.workspaceId === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'workspaceId'");
+            }
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["workspaceId"] = args ? args.workspaceId : undefined;
+            resourceInputs["projectId"] = undefined /*out*/;
         } else {
-            resourceInputs["result"] = undefined /*out*/;
+            resourceInputs["name"] = undefined /*out*/;
+            resourceInputs["projectId"] = undefined /*out*/;
+            resourceInputs["workspaceId"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Project.__pulumiType, name, resourceInputs, opts);
@@ -57,4 +69,6 @@ export class Project extends pulumi.CustomResource {
  * The set of arguments for constructing a Project resource.
  */
 export interface ProjectArgs {
+    name: pulumi.Input<string>;
+    workspaceId: pulumi.Input<string>;
 }
