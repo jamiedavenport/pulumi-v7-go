@@ -15,11 +15,6 @@ export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
 utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
-export { RandomArgs } from "./random";
-export type Random = import("./random").Random;
-export const Random: typeof import("./random").Random = null as any;
-utilities.lazyLoad(exports, ["Random"], () => require("./random"));
-
 
 // Export sub-modules:
 import * as config from "./config";
@@ -34,8 +29,6 @@ const _module = {
         switch (type) {
             case "v7-go:index:Project":
                 return new Project(name, <any>undefined, { urn })
-            case "v7-go:index:Random":
-                return new Random(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }

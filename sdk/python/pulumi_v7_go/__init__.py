@@ -7,7 +7,6 @@ import typing
 # Export this package's modules as members:
 from .project import *
 from .provider import *
-from .random import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
@@ -24,8 +23,7 @@ _utilities.register(
   "mod": "index",
   "fqn": "pulumi_v7_go",
   "classes": {
-   "v7-go:index:Project": "Project",
-   "v7-go:index:Random": "Random"
+   "v7-go:index:Project": "Project"
   }
  }
 ]

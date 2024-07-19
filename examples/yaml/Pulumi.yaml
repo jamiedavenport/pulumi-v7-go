@@ -1,4 +1,4 @@
-name: provider-v7-go-native
+name: provider-v7-go
 runtime: yaml
 plugins:
   providers:
@@ -6,11 +6,11 @@ plugins:
       path: ../../bin
 
 resources:
-  myRandomResource:
-    type: v7-go:Random
-    properties:
-      length: 24
+  myProject:
+    type: v7-go:Project
+    # properties:
+    #   length: 24
 
 outputs:
   output:
-    value: ${myRandomResource.result}
+    value: ${myProject.result}
