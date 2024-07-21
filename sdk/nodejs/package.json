@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/v7-go",
+    "name": "@jamiedavenport/pulumi-v7-go",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
