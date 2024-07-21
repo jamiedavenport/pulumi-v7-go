@@ -78,7 +78,7 @@ jobs:
         with:
           python-version: ${{matrix.pythonversion}}
       - name: Generate SDK
-        run: make ${{ matrix.language }}_sdk
+        run: make build ${{ matrix.language }}_sdk
       - name: Check worktree clean
         run: |
           git update-index -q --refresh
@@ -119,7 +119,7 @@ jobs:
         dotnetversion:
           - 3.1.301
         goversion:
-          - 1.18.x
+          - 1.21.x
         language:
           - nodejs
           - python
