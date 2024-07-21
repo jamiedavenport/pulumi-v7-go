@@ -99,6 +99,35 @@ func (Project) Delete(ctx context.Context, id string, state ProjectState) error 
 	return nil
 }
 
+func (Project) Update(ctx context.Context, id string, oldState ProjectState, newArgs ProjectArgs, preview bool) (ProjectState, error) {
+	logger := p.GetLogger(ctx)
+	logger.Info("updating project")
+
+	if preview {
+		return ProjectState{}, nil
+	}
+
+	client := CreateClient(ctx)
+	var response CreateProjectResponse
+
+	resp, err := client.R().
+		SetBody(&CreateProjectRequest{Name: newArgs.Name}).
+		SetSuccessResult(&response).
+		Put(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects/%s", newArgs.WorkspaceId, oldState.ProjectId))
+	if err != nil {
+		return ProjectState{}, err
+	}
+
+	if !resp.IsSuccessState() {
+		return ProjectState{}, fmt.Errorf("failed to update project: %s", resp.String())
+	}
+
+	return ProjectState{
+		ProjectArgs: newArgs,
+		ProjectId:   response.Id,
+	}, nil
+}
+
 func (Project) Diff(ctx context.Context, id string, oldState ProjectState, newArgs ProjectArgs) (p.DiffResponse, error) {
 	diff := map[string]p.PropertyDiff{}
 
