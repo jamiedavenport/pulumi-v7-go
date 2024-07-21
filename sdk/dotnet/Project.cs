@@ -12,6 +12,9 @@ namespace Pulumi.V7Go
     [V7GoResourceType("v7-go:index:Project")]
     public partial class Project : global::Pulumi.CustomResource
     {
+        [Output("mainViewId")]
+        public Output<string> MainViewId { get; private set; } = null!;
+
         [Output("name")]
         public Output<string> Name { get; private set; } = null!;
 

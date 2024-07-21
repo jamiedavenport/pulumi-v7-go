@@ -4,10 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/imroc/req/v3"
-
 	p "github.com/pulumi/pulumi-go-provider"
-	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
 // Each resource has a controlling struct.
@@ -30,14 +27,8 @@ type ProjectArgs struct {
 type ProjectState struct {
 	ProjectArgs
 
-	ProjectId string `pulumi:"projectId"`
-}
-
-func CreateClient(ctx context.Context) *req.Client {
-	config := infer.GetConfig[Config](ctx)
-	client := req.C().DevMode().SetCommonHeader("x-api-key", config.ApiKey)
-
-	return client
+	ProjectId  string `pulumi:"projectId"`
+	MainViewId string `pulumi:"mainViewId"`
 }
 
 type CreateProjectRequest struct {
@@ -45,7 +36,8 @@ type CreateProjectRequest struct {
 }
 
 type CreateProjectResponse struct {
-	Id string `json:"id"`
+	Id         string `json:"id"`
+	MainViewId string `json:"main_view_id"`
 }
 
 func (Project) Create(ctx context.Context, name string, args ProjectArgs, preview bool) (string, ProjectState, error) {
@@ -75,6 +67,7 @@ func (Project) Create(ctx context.Context, name string, args ProjectArgs, previe
 	return name, ProjectState{
 		ProjectArgs: args,
 		ProjectId:   response.Id,
+		MainViewId:  response.MainViewId,
 	}, nil
 }
 
@@ -83,10 +76,7 @@ func (Project) Delete(ctx context.Context, id string, state ProjectState) error 
 	logger.Info("deleting project")
 
 	client := CreateClient(ctx)
-	var response CreateProjectResponse
-
 	resp, err := client.R().
-		SetSuccessResult(&response).
 		Delete(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects/%s", state.WorkspaceId, state.ProjectId))
 	if err != nil {
 		return err
@@ -125,6 +115,7 @@ func (Project) Update(ctx context.Context, id string, oldState ProjectState, new
 	return ProjectState{
 		ProjectArgs: newArgs,
 		ProjectId:   response.Id,
+		MainViewId:  response.MainViewId,
 	}, nil
 }
 

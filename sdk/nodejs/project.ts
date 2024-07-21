@@ -31,6 +31,7 @@ export class Project extends pulumi.CustomResource {
         return obj['__pulumiType'] === Project.__pulumiType;
     }
 
+    public /*out*/ readonly mainViewId!: pulumi.Output<string>;
     public readonly name!: pulumi.Output<string>;
     public /*out*/ readonly projectId!: pulumi.Output<string>;
     public readonly workspaceId!: pulumi.Output<string>;
@@ -54,8 +55,10 @@ export class Project extends pulumi.CustomResource {
             }
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["workspaceId"] = args ? args.workspaceId : undefined;
+            resourceInputs["mainViewId"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
         } else {
+            resourceInputs["mainViewId"] = undefined /*out*/;
             resourceInputs["name"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["workspaceId"] = undefined /*out*/;

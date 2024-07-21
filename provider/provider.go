@@ -14,6 +14,7 @@ func Provider() p.Provider {
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
 			infer.Resource[Project, ProjectArgs, ProjectState](),
+			infer.Resource[Property, PropertyArgs, PropertyState](),
 		},
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",

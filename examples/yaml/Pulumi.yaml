@@ -1,3 +1,4 @@
+
 name: provider-v7-go
 runtime: yaml
 plugins:
@@ -11,7 +12,27 @@ resources:
     properties:
       workspaceId: 01905686-d113-79ff-9b33-0fa7c3ff6664
       name: My New Pulumi Project Updated
+  myInput:
+    type: v7-go:Property
+    properties:
+      workspaceId: ${myProject.workspaceId}
+      projectId: ${myProject.projectId}
+      name: My Input
+      description: My Description
+      tool: manual
+      type: text
+      inputs: []
+  myOutput:
+    type: v7-go:Property
+    properties:
+      workspaceId: ${myProject.workspaceId}
+      projectId: ${myProject.projectId}
+      name: My Output
+      description: Return the text in uppercase
+      tool: gpt_4o
+      type: text
+      inputs:
+        - propertyId: ${myInput.propertyId}
 
 outputs:
-  output:
-    value: ${myProject.projectId}
+  output: []

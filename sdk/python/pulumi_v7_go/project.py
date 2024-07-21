@@ -94,6 +94,7 @@ class Project(pulumi.CustomResource):
             if workspace_id is None and not opts.urn:
                 raise TypeError("Missing required property 'workspace_id'")
             __props__.__dict__["workspace_id"] = workspace_id
+            __props__.__dict__["main_view_id"] = None
             __props__.__dict__["project_id"] = None
         super(Project, __self__).__init__(
             'v7-go:index:Project',
@@ -117,10 +118,16 @@ class Project(pulumi.CustomResource):
 
         __props__ = ProjectArgs.__new__(ProjectArgs)
 
+        __props__.__dict__["main_view_id"] = None
         __props__.__dict__["name"] = None
         __props__.__dict__["project_id"] = None
         __props__.__dict__["workspace_id"] = None
         return Project(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter(name="mainViewId")
+    def main_view_id(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "main_view_id")
 
     @property
     @pulumi.getter

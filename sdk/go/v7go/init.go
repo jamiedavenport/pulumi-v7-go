@@ -23,6 +23,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 	switch typ {
 	case "v7-go:index:Project":
 		r = &Project{}
+	case "v7-go:index:Property":
+		r = &Property{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

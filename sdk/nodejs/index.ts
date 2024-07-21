@@ -10,6 +10,11 @@ export type Project = import("./project").Project;
 export const Project: typeof import("./project").Project = null as any;
 utilities.lazyLoad(exports, ["Project"], () => require("./project"));
 
+export { PropertyArgs } from "./property";
+export type Property = import("./property").Property;
+export const Property: typeof import("./property").Property = null as any;
+utilities.lazyLoad(exports, ["Property"], () => require("./property"));
+
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
@@ -18,9 +23,11 @@ utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
 // Export sub-modules:
 import * as config from "./config";
+import * as types from "./types";
 
 export {
     config,
+    types,
 };
 
 const _module = {
@@ -29,6 +36,8 @@ const _module = {
         switch (type) {
             case "v7-go:index:Project":
                 return new Project(name, <any>undefined, { urn })
+            case "v7-go:index:Property":
+                return new Property(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }

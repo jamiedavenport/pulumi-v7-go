@@ -15,6 +15,7 @@ import (
 type Project struct {
 	pulumi.CustomResourceState
 
+	MainViewId  pulumi.StringOutput `pulumi:"mainViewId"`
 	Name        pulumi.StringOutput `pulumi:"name"`
 	ProjectId   pulumi.StringOutput `pulumi:"projectId"`
 	WorkspaceId pulumi.StringOutput `pulumi:"workspaceId"`
@@ -111,6 +112,10 @@ func (o ProjectOutput) ToProjectOutput() ProjectOutput {
 
 func (o ProjectOutput) ToProjectOutputWithContext(ctx context.Context) ProjectOutput {
 	return o
+}
+
+func (o ProjectOutput) MainViewId() pulumi.StringOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.MainViewId }).(pulumi.StringOutput)
 }
 
 func (o ProjectOutput) Name() pulumi.StringOutput {
