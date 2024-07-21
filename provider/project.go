@@ -6,6 +6,7 @@ import (
 
 	"github.com/imroc/req/v3"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -41,6 +42,9 @@ type CreateProjectResponse struct {
 }
 
 func (Project) Create(ctx context.Context, name string, args ProjectArgs, preview bool) (string, ProjectState, error) {
+	logger := p.GetLogger(ctx)
+	logger.Info("creating project")
+
 	state := ProjectState{}
 	if preview {
 		return name, state, nil
@@ -63,7 +67,54 @@ func (Project) Create(ctx context.Context, name string, args ProjectArgs, previe
 		return name, state, fmt.Errorf("failed to create project: %s", resp.String())
 	}
 
-	state.ProjectId = response.Id
+	return name, ProjectState{
+		ProjectArgs: args,
+		ProjectId:   response.Id,
+	}, nil
+}
 
-	return name, state, nil
+func (Project) Delete(ctx context.Context, id string, state ProjectState) error {
+	logger := p.GetLogger(ctx)
+	logger.Info("deleting project")
+
+	config := infer.GetConfig[Config](ctx)
+	client := req.C().DevMode()
+	var response CreateProjectResponse
+
+	resp, err := client.R().
+		SetSuccessResult(&response).
+		SetHeader("x-api-key", config.ApiKey).
+		Delete(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects/%s", state.WorkspaceId, state.ProjectId))
+	if err != nil {
+		return err
+	}
+
+	if !resp.IsSuccessState() {
+		return fmt.Errorf("failed to delete project: %s", resp.String())
+	}
+
+	return nil
+}
+
+func (Project) Diff(ctx context.Context, id string, oldState ProjectState, newArgs ProjectArgs) (p.DiffResponse, error) {
+	diff := map[string]p.PropertyDiff{}
+
+	logger := p.GetLogger(ctx)
+	logger.Info("diffing project")
+
+	if newArgs.Name != oldState.Name {
+		diff["name"] = p.PropertyDiff{Kind: p.Update}
+		logger.Info("name changed")
+	}
+
+	if newArgs.WorkspaceId != oldState.WorkspaceId {
+		diff["workspaceId"] = p.PropertyDiff{Kind: p.UpdateReplace}
+		logger.Info("workspaceId changed")
+	}
+
+	return p.DiffResponse{
+		DeleteBeforeReplace: true,
+		HasChanges:          len(diff) > 0,
+		DetailedDiff:        diff,
+	}, nil
 }
