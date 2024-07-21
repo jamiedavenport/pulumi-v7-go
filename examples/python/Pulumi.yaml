@@ -1,4 +1,4 @@
-name: provider-v7-go-native
+name: provider-v7-go
 runtime: python
 plugins:
   providers:
