@@ -4,9 +4,9 @@
 package config
 
 import (
+	"github.com/pulumi/pulumi-v7-go/sdk/go/v7-go/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
-	"internal"
 )
 
 var _ = internal.GetEnvOrDefault

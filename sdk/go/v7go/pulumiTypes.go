@@ -7,8 +7,8 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/pulumi/pulumi-v7-go/sdk/go/v7-go/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"internal"
 )
 
 var _ = internal.GetEnvOrDefault
