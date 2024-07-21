@@ -13,7 +13,7 @@ namespace Pulumi.V7Go
     public partial class Property : global::Pulumi.CustomResource
     {
         [Output("description")]
-        public Output<string> Description { get; private set; } = null!;
+        public Output<string?> Description { get; private set; } = null!;
 
         [Output("inputs")]
         public Output<ImmutableArray<Outputs.PropertyInput>> Inputs { get; private set; } = null!;
@@ -81,8 +81,8 @@ namespace Pulumi.V7Go
 
     public sealed class PropertyArgs : global::Pulumi.ResourceArgs
     {
-        [Input("description", required: true)]
-        public Input<string> Description { get; set; } = null!;
+        [Input("description")]
+        public Input<string>? Description { get; set; }
 
         [Input("inputs", required: true)]
         private InputList<Inputs.PropertyInputArgs>? _inputs;

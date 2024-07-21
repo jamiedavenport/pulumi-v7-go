@@ -33,7 +33,7 @@ export class Property extends pulumi.CustomResource {
         return obj['__pulumiType'] === Property.__pulumiType;
     }
 
-    public readonly description!: pulumi.Output<string>;
+    public readonly description!: pulumi.Output<string | undefined>;
     public readonly inputs!: pulumi.Output<outputs.PropertyInput[]>;
     public readonly name!: pulumi.Output<string>;
     public readonly projectId!: pulumi.Output<string>;
@@ -53,9 +53,6 @@ export class Property extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.description === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'description'");
-            }
             if ((!args || args.inputs === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'inputs'");
             }
@@ -101,7 +98,7 @@ export class Property extends pulumi.CustomResource {
  * The set of arguments for constructing a Property resource.
  */
 export interface PropertyArgs {
-    description: pulumi.Input<string>;
+    description?: pulumi.Input<string>;
     inputs: pulumi.Input<pulumi.Input<inputs.PropertyInputArgs>[]>;
     name: pulumi.Input<string>;
     projectId: pulumi.Input<string>;

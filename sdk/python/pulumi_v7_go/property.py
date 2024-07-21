@@ -16,32 +16,24 @@ __all__ = ['PropertyArgs', 'Property']
 @pulumi.input_type
 class PropertyArgs:
     def __init__(__self__, *,
-                 description: pulumi.Input[str],
                  inputs: pulumi.Input[Sequence[pulumi.Input['PropertyInputArgs']]],
                  name: pulumi.Input[str],
                  project_id: pulumi.Input[str],
                  tool: pulumi.Input[str],
                  type: pulumi.Input[str],
-                 workspace_id: pulumi.Input[str]):
+                 workspace_id: pulumi.Input[str],
+                 description: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Property resource.
         """
-        pulumi.set(__self__, "description", description)
         pulumi.set(__self__, "inputs", inputs)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "project_id", project_id)
         pulumi.set(__self__, "tool", tool)
         pulumi.set(__self__, "type", type)
         pulumi.set(__self__, "workspace_id", workspace_id)
-
-    @property
-    @pulumi.getter
-    def description(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "description")
-
-    @description.setter
-    def description(self, value: pulumi.Input[str]):
-        pulumi.set(self, "description", value)
+        if description is not None:
+            pulumi.set(__self__, "description", description)
 
     @property
     @pulumi.getter
@@ -96,6 +88,15 @@ class PropertyArgs:
     @workspace_id.setter
     def workspace_id(self, value: pulumi.Input[str]):
         pulumi.set(self, "workspace_id", value)
+
+    @property
+    @pulumi.getter
+    def description(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "description")
+
+    @description.setter
+    def description(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "description", value)
 
 
 class Property(pulumi.CustomResource):
@@ -155,8 +156,6 @@ class Property(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = PropertyArgs.__new__(PropertyArgs)
 
-            if description is None and not opts.urn:
-                raise TypeError("Missing required property 'description'")
             __props__.__dict__["description"] = description
             if inputs is None and not opts.urn:
                 raise TypeError("Missing required property 'inputs'")
@@ -211,7 +210,7 @@ class Property(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def description(self) -> pulumi.Output[str]:
+    def description(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "description")
 
     @property

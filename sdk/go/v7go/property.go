@@ -15,7 +15,7 @@ import (
 type Property struct {
 	pulumi.CustomResourceState
 
-	Description pulumi.StringOutput          `pulumi:"description"`
+	Description pulumi.StringPtrOutput       `pulumi:"description"`
 	Inputs      PropertyInputTypeArrayOutput `pulumi:"inputs"`
 	Name        pulumi.StringOutput          `pulumi:"name"`
 	ProjectId   pulumi.StringOutput          `pulumi:"projectId"`
@@ -32,9 +32,6 @@ func NewProperty(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
-	if args.Description == nil {
-		return nil, errors.New("invalid value for required argument 'Description'")
-	}
 	if args.Inputs == nil {
 		return nil, errors.New("invalid value for required argument 'Inputs'")
 	}
@@ -86,7 +83,7 @@ func (PropertyState) ElementType() reflect.Type {
 }
 
 type propertyArgs struct {
-	Description string              `pulumi:"description"`
+	Description *string             `pulumi:"description"`
 	Inputs      []PropertyInputType `pulumi:"inputs"`
 	Name        string              `pulumi:"name"`
 	ProjectId   string              `pulumi:"projectId"`
@@ -97,7 +94,7 @@ type propertyArgs struct {
 
 // The set of arguments for constructing a Property resource.
 type PropertyArgs struct {
-	Description pulumi.StringInput
+	Description pulumi.StringPtrInput
 	Inputs      PropertyInputTypeArrayInput
 	Name        pulumi.StringInput
 	ProjectId   pulumi.StringInput
@@ -143,8 +140,8 @@ func (o PropertyOutput) ToPropertyOutputWithContext(ctx context.Context) Propert
 	return o
 }
 
-func (o PropertyOutput) Description() pulumi.StringOutput {
-	return o.ApplyT(func(v *Property) pulumi.StringOutput { return v.Description }).(pulumi.StringOutput)
+func (o PropertyOutput) Description() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Property) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
 }
 
 func (o PropertyOutput) Inputs() PropertyInputTypeArrayOutput {

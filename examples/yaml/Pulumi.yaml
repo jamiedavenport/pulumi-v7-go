@@ -18,7 +18,6 @@ resources:
       workspaceId: ${myProject.workspaceId}
       projectId: ${myProject.projectId}
       name: My Input
-      description: My Description
       tool: manual
       type: text
       inputs: []

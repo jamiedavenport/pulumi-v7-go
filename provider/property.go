@@ -16,7 +16,7 @@ type PropertyArgs struct {
 	ProjectId   string `pulumi:"projectId" json:"-"`
 
 	Name        string          `pulumi:"name"`
-	Description string          `pulumi:"description"`
+	Description string          `pulumi:"description,optional"`
 	Tool        string          `pulumi:"tool"` // todo enum
 	Type        string          `pulumi:"type"`
 	Inputs      []PropertyInput `pulumi:"inputs"`
