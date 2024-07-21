@@ -21,7 +21,7 @@ builds:
       - -X github.com/jamiedavenport/pulumi-v7-go/provider/Version={{.Tag }}
     main: ./cmd/pulumi-resource-v7-go/
 changelog:
-  skip: true
+  disable: true
 release:
   disable: false
   prerelease: auto
