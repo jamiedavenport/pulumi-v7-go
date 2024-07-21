@@ -33,6 +33,13 @@ type ProjectState struct {
 	ProjectId string `pulumi:"projectId"`
 }
 
+func CreateClient(ctx context.Context) *req.Client {
+	config := infer.GetConfig[Config](ctx)
+	client := req.C().DevMode().SetCommonHeader("x-api-key", config.ApiKey)
+
+	return client
+}
+
 type CreateProjectRequest struct {
 	Name string `json:"name"`
 }
@@ -50,14 +57,12 @@ func (Project) Create(ctx context.Context, name string, args ProjectArgs, previe
 		return name, state, nil
 	}
 
-	config := infer.GetConfig[Config](ctx)
-	client := req.C().DevMode()
+	client := CreateClient(ctx)
 	var response CreateProjectResponse
 
 	resp, err := client.R().
 		SetBody(&CreateProjectRequest{Name: args.Name}).
 		SetSuccessResult(&response).
-		SetHeader("x-api-key", config.ApiKey).
 		Post(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects", args.WorkspaceId))
 	if err != nil {
 		return Name, state, err
@@ -77,13 +82,11 @@ func (Project) Delete(ctx context.Context, id string, state ProjectState) error 
 	logger := p.GetLogger(ctx)
 	logger.Info("deleting project")
 
-	config := infer.GetConfig[Config](ctx)
-	client := req.C().DevMode()
+	client := CreateClient(ctx)
 	var response CreateProjectResponse
 
 	resp, err := client.R().
 		SetSuccessResult(&response).
-		SetHeader("x-api-key", config.ApiKey).
 		Delete(fmt.Sprintf("https://go.v7labs.com/api/workspaces/%s/projects/%s", state.WorkspaceId, state.ProjectId))
 	if err != nil {
 		return err
