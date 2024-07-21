@@ -78,7 +78,7 @@ jobs:
         with:
           python-version: ${{matrix.pythonversion}}
       - name: Generate SDK
-        run: make build ${{ matrix.language }}_sdk
+        run: make provider ${{ matrix.language }}_sdk
       - name: Check worktree clean
         run: |
           git update-index -q --refresh
