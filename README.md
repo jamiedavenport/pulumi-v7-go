@@ -88,3 +88,11 @@ You can now repeat the steps for [build, install, and test](#test-against-the-ex
 Other resources/examples for implementing providers:
 * [Pulumi Command provider](https://github.com/pulumi/pulumi-command/blob/master/provider/pkg/provider/provider.go)
 * [Pulumi Go Provider repository](https://github.com/pulumi/pulumi-go-provider)
+
+# Future
+
+```sh
+# Install Plugin for YAML
+# todo embed download url in packages for Pulumi to use
+pulumi plugin install resource v7-go v0.1.15 --server github://api.github.com/jamiedavenport/pulumi-v7-go
+```
