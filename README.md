@@ -30,7 +30,9 @@ pulumi plugin install resource v7-go --server github://api.github.com/jamiedaven
 
 ## Python ([example](./examples/python))
 
-TODO
+```sh
+pip install pulumi-v7-go
+```
 
 ## .NET ([example](./examples/dotnet))
 
