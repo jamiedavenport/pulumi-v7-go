@@ -10,7 +10,7 @@ import (
 
 func CreateClient(ctx context.Context) *req.Client {
 	config := infer.GetConfig[Config](ctx)
-	client := req.C().DevMode().SetCommonHeader("x-api-key", config.ApiKey)
+	client := req.C().SetCommonHeader("x-api-key", config.ApiKey)
 
 	return client
 }
