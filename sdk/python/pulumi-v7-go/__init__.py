@@ -13,10 +13,10 @@ from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_v7_go.config as __config
+    import pulumi-v7-go.config as __config
     config = __config
 else:
-    config = _utilities.lazy_import('pulumi_v7_go.config')
+    config = _utilities.lazy_import('pulumi-v7-go.config')
 
 _utilities.register(
     resource_modules="""
@@ -24,7 +24,7 @@ _utilities.register(
  {
   "pkg": "v7-go",
   "mod": "index",
-  "fqn": "pulumi_v7_go",
+  "fqn": "pulumi-v7-go",
   "classes": {
    "v7-go:index:Project": "Project",
    "v7-go:index:Property": "Property"
@@ -37,7 +37,7 @@ _utilities.register(
  {
   "pkg": "v7-go",
   "token": "pulumi:providers:v7-go",
-  "fqn": "pulumi_v7_go",
+  "fqn": "pulumi-v7-go",
   "class": "Provider"
  }
 ]

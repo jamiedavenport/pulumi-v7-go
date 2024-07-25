@@ -6,6 +6,7 @@ import (
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/python"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 )
 
@@ -30,6 +31,9 @@ func Provider() p.Provider {
 				},
 				"csharp": dotnet.CSharpPackageInfo{
 					RootNamespace: "JamieDavenport",
+				},
+				"python": python.PackageInfo{
+					PackageName: "pulumi-v7-go",
 				},
 			},
 			PluginDownloadURL: "github://api.github.com/jamiedavenport/pulumi-v7-go",

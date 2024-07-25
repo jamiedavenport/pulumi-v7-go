@@ -17,14 +17,14 @@ def readme():
         return "v7-go Pulumi Package - Development Version"
 
 
-setup(name='pulumi_v7_go',
+setup(name='pulumi-v7-go',
       python_requires='>=3.8',
       version=VERSION,
       long_description=readme(),
       long_description_content_type='text/markdown',
       packages=find_packages(),
       package_data={
-          'pulumi_v7_go': [
+          'pulumi-v7-go': [
               'py.typed',
               'pulumi-plugin.json',
           ]
