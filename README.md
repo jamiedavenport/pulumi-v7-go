@@ -4,7 +4,7 @@ This Pulumi provider enables you to manage [V7 Go](https://www.v7labs.com/go) re
 
 # Installation
 
-## Node ([example](./examples/node))
+## Node ([example](./examples/nodejs))
 
 ```sh
 npm install @jamiedavenport/pulumi-v7-go
