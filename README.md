@@ -34,7 +34,9 @@ TODO
 
 ## .NET ([example](./examples/dotnet))
 
-TODO
+```sh
+dotnet add package JamieDavenport.V7Go
+```
 
 # Configuration
 
