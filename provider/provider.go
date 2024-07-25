@@ -4,6 +4,7 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
+	"github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 )
@@ -26,6 +27,9 @@ func Provider() p.Provider {
 			LanguageMap: map[string]any{
 				"nodejs": nodejs.NodePackageInfo{
 					PackageName: "@jamiedavenport/pulumi-v7-go",
+				},
+				"csharp": dotnet.CSharpPackageInfo{
+					RootNamespace: "JamieDavenport",
 				},
 			},
 			PluginDownloadURL: "github://api.github.com/jamiedavenport/pulumi-v7-go",

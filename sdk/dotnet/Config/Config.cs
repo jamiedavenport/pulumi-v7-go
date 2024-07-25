@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Pulumi.V7Go
+namespace JamieDavenport.V7Go
 {
     public static class Config
     {

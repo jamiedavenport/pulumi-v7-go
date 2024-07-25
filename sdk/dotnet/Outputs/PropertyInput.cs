@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.V7Go.Outputs
+namespace JamieDavenport.V7Go.Outputs
 {
 
     [OutputType]

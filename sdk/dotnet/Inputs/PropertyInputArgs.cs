@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.V7Go.Inputs
+namespace JamieDavenport.V7Go.Inputs
 {
 
     public sealed class PropertyInputArgs : global::Pulumi.ResourceArgs

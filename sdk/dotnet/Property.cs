@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.V7Go
+namespace JamieDavenport.V7Go
 {
     [V7GoResourceType("v7-go:index:Property")]
     public partial class Property : global::Pulumi.CustomResource
