@@ -28,6 +28,7 @@ func Provider() p.Provider {
 					PackageName: "@jamiedavenport/pulumi-v7-go",
 				},
 			},
+			PluginDownloadURL: "github://api.github.com/jamiedavenport/pulumi-v7-go",
 		},
 	})
 }

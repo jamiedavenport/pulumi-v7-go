@@ -13,6 +13,7 @@
     },
     "pulumi": {
         "resource": true,
-        "name": "v7-go"
+        "name": "v7-go",
+        "server": "github://api.github.com/jamiedavenport/pulumi-v7-go"
     }
 }

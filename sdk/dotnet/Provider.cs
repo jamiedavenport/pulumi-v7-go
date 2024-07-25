@@ -33,6 +33,7 @@ namespace Pulumi.V7Go
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
+                PluginDownloadURL = "github://api.github.com/jamiedavenport/pulumi-v7-go",
                 AdditionalSecretOutputs =
                 {
                     "apiKey",
